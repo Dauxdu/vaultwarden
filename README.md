@@ -1,10 +1,13 @@
-# **HOW TO install vaultwarden using docker & traefik**
+# **🤔 HOW TO install vaultwarden using docker & traefik**
 ###### Thank you mrgukki ❤️
 
-### 0. Official repository
+## Official repository
 The guide is based on the [official](https://github.com/dani-garcia/vaultwarden) dani-garcia repository.
 
-### 1. Linux
+### 0. ✏️ DNS A record
+Before proceeding, it is advisable to immediately enter a DNS A record in your domain editor with the format vw.your.domain
+
+### 1. 🐧 Linux
 Updating repositories and installing kernel updates
 ```
 apt-get update
@@ -15,7 +18,7 @@ Then reboot the operating system, and after the reboot navigate to /home/deploy
 cd /home/deploy
 ```
 
-### 2. Docker
+### 2. 🐳 Docker
 Install Docker
 ```
 curl -fsSL get.docker.com -o get-docker.sh
@@ -27,7 +30,7 @@ Initialise the docker swarm to run services as in docker-compose
 docker swarm init
 ```
 
-### 3. Traefik
+### 3. 🦫 Traefik
 Creating a network for Traefik to communicate with the outside world
 ```
 docker network create --driver=overlay traefik-public
@@ -165,8 +168,8 @@ time="2022-10-30T19:00:00Z" level=info msg="Configuration loaded from flags."
 10.0.0.2 - - [30/Oct/2022:19:00:00 +0000] "GET /api/overview HTTP/2.0" 200 497 "-" "-" 1 "traefik-public-https@docker" "-" 0ms
 10.0.0.2 - - [30/Oct/2022:19:00:00 +0000] "GET /api/http/routers?search=&status=&per_page=10&page=1 HTTP/2.0" 200 437 "-" "-" 2 "traefik-public-https@docker" "-" 0ms
 ```
-### 4. Vaultwarden
-Exporting variables for Vaultwarden. ⚠️ IMPORTANT: **ADMIN_TOKEN** and **DOMAIN** should be changed to yours
+### 4. 🛡 Vaultwarden
+Exporting variables for Vaultwarden. ⚠️ **ADMIN_TOKEN** and **DOMAIN** should be changed to yours
 ```
 export ADMIN_TOKEN=your_password
 export SIGNUPS_ALLOWED=true
