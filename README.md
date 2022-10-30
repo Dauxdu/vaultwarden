@@ -159,8 +159,12 @@ Find out the container ID with ```docker ps``` and look at the logs
 ```
 docker logs -f --tail 50 Container ID
 ```
-If deployed successfully, there will be HTTP requests from traefik
-
+If the deployment is successful, you will receive a message like this
+```
+time="2022-10-30T19:00:00Z" level=info msg="Configuration loaded from flags."
+10.0.0.2 - - [30/Oct/2022:19:00:00 +0000] "GET /api/overview HTTP/2.0" 200 497 "-" "-" 1 "traefik-public-https@docker" "-" 0ms
+10.0.0.2 - - [30/Oct/2022:19:00:00 +0000] "GET /api/http/routers?search=&status=&per_page=10&page=1 HTTP/2.0" 200 437 "-" "-" 2 "traefik-public-https@docker" "-" 0ms
+```
 ### 4. Vaultwarden
 Exporting variables for Vaultwarden. ⚠️ IMPORTANT: **ADMIN_TOKEN** and **DOMAIN** should be changed to yours
 ```
