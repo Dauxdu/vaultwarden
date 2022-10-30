@@ -214,3 +214,21 @@ Deploy vaultwarden
 ```
 docker stack deploy -c vw.yml vaultwarden
 ```
+If the deployment is successful, you will receive a message like this
+```
+/--------------------------------------------------------------------\
+|                        Starting Vaultwarden                        |
+|                           Version 1.26.0                           |
+|--------------------------------------------------------------------|
+| This is an *unofficial* Bitwarden implementation, DO NOT use the   |
+| official channels to report bugs/features, regardless of client.   |
+| Send usage/configuration questions or feature requests to:         |
+|   https://vaultwarden.discourse.group/                             |
+| Report suspected bugs/issues in the software itself at:            |
+|   https://github.com/dani-garcia/vaultwarden/issues/new            |
+\--------------------------------------------------------------------/
+
+[INFO] No .env file found.
+
+[2022-10-30 19:00:00.394][start][INFO] Rocket has launched from http://0.0.0.0:80
+```
