@@ -4,6 +4,13 @@
 ## Official repository
 The guide is based on the [official](https://github.com/dani-garcia/vaultwarden) dani-garcia repository.
 
+## Contents
+0. [:pencil2: DNS A record](https://github.com/Dauxdu/vaultwarden#0-%EF%B8%8F-dns-a-record)
+1. [:penguin: Linux](https://github.com/Dauxdu/vaultwarden#1--linux)
+2. [:whale: Docker](https://github.com/Dauxdu/vaultwarden#2--docker)
+3. [:beaver: Traefik](https://github.com/Dauxdu/vaultwarden#3--traefik)
+
+
 ### 0. ✏️ DNS A record
 Before proceeding, it is advisable to immediately enter a DNS A record in your domain editor with the format vw.your.domain
 
