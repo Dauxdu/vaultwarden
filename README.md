@@ -17,7 +17,7 @@ Before proceeding, it is advisable to immediately enter a DNS A record in your d
 ### 1. 🐧 Linux
 Updating repositories and installing kernel updates
 ```
-apt-get update && apt-get upgrade -y
+apt update && apt upgrade -y
 ```
 Then reboot the operating system, and after the reboot navigate to /home/deploy
 ```
