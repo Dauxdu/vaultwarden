@@ -16,50 +16,50 @@ Before proceeding, it is advisable to immediately enter a DNS A record in your d
 
 ### 1. 🐧 Linux
 Updating repositories and installing kernel updates
-```
+``` Bash
 apt update && apt upgrade -y
 ```
 Then reboot the operating system, and after the reboot navigate to /home/deploy
-```
+``` Bash
 cd /home/deploy
 ```
 
 ### 2. 🐳 Docker
 Install Docker
-```
+``` Bash
 curl -fsSL get.docker.com -o get-docker.sh
 CHANNEL=stable sh get-docker.sh
 rm get-docker.sh
 ```
 Initialise the docker swarm to run services as in docker-compose
-```
+``` Bash
 docker swarm init
 ```
 
 ### 3. 🦫 Traefik
 Creating a network for Traefik to communicate with the outside world
-```
+``` Bash
 docker network create --driver=overlay traefik-public
 ```
 Retrieve the variable as a node ID and store it in the cache
-```
+``` Bash
 export NODE_ID=$(docker info -f '{{.Swarm.NodeID}}')
 ```
 Specify a tag for Traefik on this node
-```
+``` Bash
 docker node update --label-add traefik-public.traefik-public-certificates=true $NODE_ID
 ```
 Exporting **EMAIL** and **DOMAIN** variables to obtain certificates in Traefik
-```
+``` Bash
 export EMAIL=*email@mail.domain*
 export DOMAIN=traefik.*your.domain*
 ```
 Create a configuration file
-```
+``` Bash
 nano traefik.yml
 ```
 Insert the docker-compose text and save
-```
+``` YAML
 version: '3.5'
 
 services:
@@ -160,12 +160,12 @@ networks:
     external: true
 ```
 Create a directory for certificates and deploy traefik
-```
+``` Bash
 mkdir certificates
 docker stack deploy -c traefik.yml traefik
 ```
 Find out the container ID with ```docker ps``` and look at the logs
-```
+``` Bash
 docker logs -f --tail 50 Container ID
 ```
 If the deployment is successful, you will receive a message like this
@@ -176,17 +176,17 @@ time="2022-10-30T19:00:00Z" level=info msg="Configuration loaded from flags."
 ```
 ### 4. 🛡 Vaultwarden
 Exporting variables for Vaultwarden. ⚠️ **ADMIN_TOKEN** and **DOMAIN** should be changed to yours
-```
+``` Bash
 export ADMIN_TOKEN=your_password
 export SIGNUPS_ALLOWED=true
 export DOMAIN=vw.your.domain
 ```
 Create a configuration file
-```
+``` Bash
 nano vw.yml
 ```
 Insert the docker-compose text and save
-```
+``` YAML
 version: '3.4'
 services:
   vaultwarden:
@@ -217,7 +217,7 @@ networks:
     external: true
 ```
 Deploy vaultwarden
-```
+``` Bash
 docker stack deploy -c vw.yml vaultwarden
 ```
 If the deployment is successful, you will receive a message like this
