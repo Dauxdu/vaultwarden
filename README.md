@@ -1,77 +1,97 @@
 # **🤔 HOW TO install vaultwarden using docker & traefik**
+
 ###### Thank you mrgukki ❤️
 
 ## Official repository
+
 The guide is based on the [official](https://github.com/dani-garcia/vaultwarden) dani-garcia repository.
 
 ## Contents
+
 0. [:pencil2: DNS A record](https://github.com/Dauxdu/vaultwarden#0-%EF%B8%8F-dns-a-record)
 1. [:penguin: Linux](https://github.com/Dauxdu/vaultwarden#1--linux)
 2. [:whale: Docker](https://github.com/Dauxdu/vaultwarden#2--docker)
 3. [:beaver: Traefik](https://github.com/Dauxdu/vaultwarden#3--traefik)
 
-
 ### 0. ✏️ DNS A record
+
 Before proceeding, it is advisable to immediately enter a DNS A record in your domain editor with the format vw.your.domain
 
 ### 1. 🐧 Linux
+
 Updating repositories and installing kernel updates
-``` Bash
+
+```Bash
 apt update && apt upgrade -y
 ```
+
 Then reboot the operating system, and after the reboot navigate to /home/deploy
-``` Bash
+
+```Bash
 cd /home/deploy
 ```
 
 ### 2. 🐳 Docker
+
 Install Docker
-``` Bash
+
+```Bash
 curl -fsSL get.docker.com -o get-docker.sh
 CHANNEL=stable sh get-docker.sh
 rm get-docker.sh
 ```
+
 Initialise the docker swarm to run services as in docker-compose
-``` Bash
+
+```Bash
 docker swarm init
 ```
 
 ### 3. 🦫 Traefik
+
 Creating a network for Traefik to communicate with the outside world
-``` Bash
+
+```Bash
 docker network create --driver=overlay traefik-public
 ```
+
 Retrieve the variable as a node ID and store it in the cache
-``` Bash
+
+```Bash
 export NODE_ID=$(docker info -f '{{.Swarm.NodeID}}')
 ```
+
 Specify a tag for Traefik on this node
-``` Bash
+
+```Bash
 docker node update --label-add traefik-public.traefik-public-certificates=true $NODE_ID
 ```
+
 Exporting **EMAIL** and **DOMAIN** variables to obtain certificates in Traefik
-``` Bash
+
+```Bash
 export EMAIL=*email@mail.domain*
 export DOMAIN=traefik.*your.domain*
 ```
+
 Create a configuration file
-``` Bash
+
+```Bash
 nano traefik.yml
 ```
+
 Insert the docker-compose text and save
-``` YAML
+
+```YAML
 version: '3.5'
 
 services:
 
   traefik:
-    # Use the latest v2.2.x Traefik image available
     image: traefik:v2.7
     ports:
-      # Listen on port 80, default for HTTP, necessary to redirect to HTTPS
-      - 80:80
-      # Listen on port 443, default for HTTPS
-      - 443:443
+      - 80:80/tcp
+      - 443:443/tcp
     deploy:
       placement:
         constraints:
@@ -159,34 +179,47 @@ networks:
   traefik-public:
     external: true
 ```
+
 Create a directory for certificates and deploy traefik
-``` Bash
+
+```Bash
 mkdir certificates
 docker stack deploy -c traefik.yml traefik
 ```
-Find out the container ID with ```docker ps``` and look at the logs
-``` Bash
+
+Find out the container ID with `docker ps` and look at the logs
+
+```Bash
 docker logs -f --tail 50 Container ID
 ```
+
 If the deployment is successful, you will receive a message like this
+
 ```
 time="2022-10-30T19:00:00Z" level=info msg="Configuration loaded from flags."
 10.0.0.2 - - [30/Oct/2022:19:00:00 +0000] "GET /api/overview HTTP/2.0" 200 497 "-" "-" 1 "traefik-public-https@docker" "-" 0ms
 10.0.0.2 - - [30/Oct/2022:19:00:00 +0000] "GET /api/http/routers?search=&status=&per_page=10&page=1 HTTP/2.0" 200 437 "-" "-" 2 "traefik-public-https@docker" "-" 0ms
 ```
+
 ### 4. 🛡 Vaultwarden
+
 Exporting variables for Vaultwarden. ⚠️ **ADMIN_TOKEN** and **DOMAIN** should be changed to yours
-``` Bash
+
+```Bash
 export ADMIN_TOKEN=your_password
 export SIGNUPS_ALLOWED=true
 export DOMAIN=vw.your.domain
 ```
+
 Create a configuration file
-``` Bash
+
+```Bash
 nano vw.yml
 ```
+
 Insert the docker-compose text and save
-``` YAML
+
+```YAML
 version: '3.4'
 services:
   vaultwarden:
@@ -216,11 +249,15 @@ networks:
   traefik-public:
     external: true
 ```
+
 Deploy vaultwarden
-``` Bash
+
+```Bash
 docker stack deploy -c vw.yml vaultwarden
 ```
+
 If the deployment is successful, you will receive a message like this
+
 ```
 /--------------------------------------------------------------------\
 |                        Starting Vaultwarden                        |
